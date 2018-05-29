@@ -6,7 +6,6 @@ A Python and Flask based REST API that serves a Keras/TensorFlow Convolutional N
 trained to classify satellite image tiles into 17 different possible labels.
 This API currently interfaces with a [React and Leaflet front-end](https://github.com/conlamon/varianceEarth).
 
-This is an experimental site, with many known limitations and inaccuracies. See Limitations section.
 
 ![Site](https://github.com/conlamon/varianceEarth/blob/master/media/variancearth.png)
 
