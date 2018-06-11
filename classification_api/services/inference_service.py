@@ -20,8 +20,6 @@ def load_model():
     Updates global variables
 
     Note: Make sure this is run prior to starting the API to prevent request errors
-
-    TO DO: Update model and weights to not be store locally
     '''
     global model, classes, graph
 
