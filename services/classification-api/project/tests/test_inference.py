@@ -19,17 +19,8 @@ def add_tile(z_coord, x_coord, y_coord, path):
     db.session.add(tile)
     db.session.commit()
 
+
 class TestInferenceService(BaseTestCase):
-
-
-    def test_ping(self):
-        response = self.client.get('/inference/ping')
-        data = json.loads(response.data.decode())
-        self.assertEqual(response.status_code, 200)
-        self.assertIn('pong!', data['message'])
-        self.assertIn('success', data['status'])
-
-
     # def test_find_tile(self):
     #     add_tile(z_coord=11, x_coord=332, y_coord=126)
     #     # Add call to ImageTile.find_path_by_coords function
@@ -54,6 +45,14 @@ class TestInferenceService(BaseTestCase):
             data = json.loads(response.data.decode())
             self.assertEqual(data['success'], True)
             self.assertEqual(response.status_code, 200)
+
+
+    def test_ping(self):
+        response = self.client.get('/inference/ping')
+        data = json.loads(response.data.decode())
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('pong!', data['message'])
+        self.assertIn('success', data['status'])
 
 
 
