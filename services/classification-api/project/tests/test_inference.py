@@ -21,14 +21,6 @@ def add_tile(z_coord, x_coord, y_coord, path):
 
 
 class TestInferenceService(BaseTestCase):
-    # def test_find_tile(self):
-    #     add_tile(z_coord=11, x_coord=332, y_coord=126)
-    #     # Add call to ImageTile.find_path_by_coords function
-    #
-    #
-    # def test_setup_db_from_file(self):
-    #     # Add test to ensure db gets setup from file correctly
-    #     pass
 
     def test_predict(self):
         # Add function to send POST request to /predict endpoint and ensure get response back
