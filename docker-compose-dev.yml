@@ -1,0 +1,45 @@
+version: '3.6'
+
+services:
+
+  classification-api:
+    build:
+      context: ./services/classification-api
+      dockerfile: Dockerfile-dev
+    volumes:
+      - './services/classification-api:/usr/src/app'
+    ports:
+      - 5001:5000
+#    expose:
+#      - 5000
+    environment:
+      - FLASK_ENV=development
+      - APP_SETTINGS=project.config.DevelopmentConfig
+      - DATABASE_URL=postgres://postgres:postgres@tiles-db:5432/tiles_dev
+      - DATABASE_TEST_URL=postgres://postgres:postgres@tiles-db:5432/tiles_test
+      - PREDICTION_CUTOFF=0.1
+      - PREDICTION_ZOOM=11
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
+    depends_on:
+      - tiles-db
+
+  tiles-db:
+    build:
+      context: ./services/classification-api/project/db
+      dockerfile: Dockerfile
+    ports:
+      - 5435:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+#  nginx:
+#    build:
+#      context: ./services/nginx
+#      dockerfile: Dockerfile-dev
+#    restart: always
+#    ports:
+#      - 80:80
+#    depends_on:
+#      - classification-api

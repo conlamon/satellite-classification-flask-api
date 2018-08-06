@@ -1,0 +1,23 @@
+# Base image
+FROM tensorflow/tensorflow:1.8.0-py3
+
+RUN apt-get update &&\
+    apt-get install -y --no-install-recommends netcat-openbsd
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Add and install requirements
+COPY ./requirements.txt /usr/src/app/requirements.txt
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# Add entrypoint.sh
+COPY ./entrypoint-prod.sh /usr/src/app/entrypoint-prod.sh
+RUN chmod +x /usr/src/app/entrypoint-prod.sh
+
+# Add app
+COPY . /usr/src/app
+
+# Run server
+CMD ["chmod","+x", "/usr/src/app/entrypoint-prod.sh"]

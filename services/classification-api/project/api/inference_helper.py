@@ -1,6 +1,5 @@
 '''
-Modified from Keras Tutorial by Francois Chollet
-https://blog.keras.io/building-a-simple-keras-deep-learning-rest-api.html
+Helper file to implement functions for directly dealing with the tensorflow model
 '''
 import numpy as np
 from PIL import Image
@@ -9,9 +8,8 @@ from keras.applications.resnet50 import preprocess_input
 from keras.models import model_from_json
 from keras.preprocessing.image import img_to_array
 import os
+import gc
 
-# Define global variables to pre-load the model
-global model, classes, graph
 
 
 def load_model():
@@ -20,20 +18,21 @@ def load_model():
     Updates global variables
 
     Note: Make sure this is run prior to starting the API to prevent request errors
+
     '''
     global model, classes, graph
 
     # Load in the model and weights
-    with open('static/classification_model/resnet50_model.json', 'r') as raw_json:
+    with open('project/static/tfmodel/resnet50_model.json', 'r') as raw_json:
         loaded_json_model = raw_json.read()
         model = model_from_json(loaded_json_model)
-    model.load_weights('static/classification_model/resnet50_weights.hdf5')
+    model.load_weights('project/static/tfmodel/resnet50_weights.hdf5')
 
     # Load in the classes
-    with open('static/classification_model/classes.txt', 'r') as class_file:
+    with open('project/static/tfmodel/classes.txt', 'r') as class_file:
         for line in class_file:
             classes = line.split(" ")
-    classes = np.array(classes).reshape(1, 17)
+    classes = np.array(classes).reshape(1, len(classes))
 
     # Define the global TensorFlow graph
     graph = tf.get_default_graph()
@@ -89,6 +88,10 @@ def predict(image_path):
     with graph.as_default():
         # Make a prediction
         predictions = model.predict(image)
+
+        # Free up image resources
+        del image
+        gc.collect()
 
         # Set a mask and filter predictions
         prediction_cutoff = os.environ.get('PREDICTION_CUTOFF', '0.1')

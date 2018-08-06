@@ -1,0 +1,3 @@
+CREATE DATABASE tiles_prod;
+CREATE DATABASE tiles_dev;
+CREATE DATABASE tiles_test;
