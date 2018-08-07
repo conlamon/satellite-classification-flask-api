@@ -8,6 +8,7 @@ from project.api.inference_helper import load_model
 import coverage
 
 
+# ------- Setup code coverage reporting
 # Configure the code coverage report
 COV = coverage.coverage(
     branch=True,
@@ -17,11 +18,9 @@ COV = coverage.coverage(
         'project/config.py'
     ]
 )
-
 COV.start()
 
-# Create the flask app
-
+# ------- Start Flask App
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
 
@@ -30,14 +29,24 @@ print("Loading the model")
 load_model()
 
 
+# Handle CORS
+@app.after_request
+def after_request(response):
+  response.headers.add('Access-Control-Allow-Origin', '*')
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+  return response
+
+# ------- Setup CLI commands for docker deployment
+
+# Command to recreate the database
 @cli.command()
 def recreate_db():
     db.drop_all()
     db.create_all()
     db.session.commit()
 
-
-
+# Command to run unit tests
 @cli.command()
 def test():
     """Runs tests without code coverage report"""
@@ -47,6 +56,8 @@ def test():
         return 0
     return 1
 
+# Command to seed the database with information provided in a .csv file
+# Note: Use psycopg2 copy_from command to perform this operation efficiently
 @cli.command()
 def seed_db():
     """Seeds the database with provided csv data of tile location"""
@@ -57,7 +68,7 @@ def seed_db():
         cursor.copy_from(data_file, 'tiles', sep=',')
     db.session.commit()
 
-
+# Run code coverage report
 @cli.command()
 def cov():
     """Runs the unt tests with coverage"""
