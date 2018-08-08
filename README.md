@@ -36,7 +36,6 @@ The main labels that appear in the current implementation are defined as the fol
 
 There are many more labels which can be found [here](https://www.kaggle.com/c/planet-understanding-the-amazon-from-space/data).
 
-Inference is currently being run on an image from [Landsat8](https://www.usgs.gov/products/data-and-tools/real-time-data/remote-land-sensing-and-landsat).
 ## Model Choice
 
 A [ResNet architecture](https://arxiv.org/abs/1512.03385) was chosen for the CNN due to it's
