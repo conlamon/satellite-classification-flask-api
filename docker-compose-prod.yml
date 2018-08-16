@@ -6,10 +6,10 @@ services:
     build:
       context: ./services/classification-api
       dockerfile: Dockerfile-prod
-    ports:
-      - 5001:5000
-#    expose:
-#      - 5000
+#    ports:
+#      - 5001:5000
+    expose:
+      - 5000
     environment:
       - FLASK_ENV=production
       - APP_SETTINGS=project.config.ProductionConfig
@@ -32,13 +32,13 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
-#  nginx:
-#    build:
-#      context: ./services/nginx
-#      dockerfile: Dockerfile-dev #Maybe prod
-#    restart: always
-#    ports:
-#      - 80:80
-#    depends_on:
-#      - classification-api
+  nginx:
+    build:
+      context: ./services/nginx
+      dockerfile: Dockerfile-prod
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - classification-api
 
