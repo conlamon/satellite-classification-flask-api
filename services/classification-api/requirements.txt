@@ -2,6 +2,6 @@ Flask
 Flask-SQLAlchemy
 Flask-Testing
 psycopg2-binary
-gunicorn==19.8.1
+gunicorn==22.0.0
 coverage==4.5.1
 Keras==2.1.6
